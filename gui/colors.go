@@ -127,10 +127,10 @@ var globalForegroundColor = 0x000000
 
 func loadPaletteFromFile(filename string) ([]int, error) {
 	f, err := os.Open(filename)
-	defer f.Close()
 	if err != nil {
 		return nil, err
 	}
+	defer f.Close()
 	csv, err := io.ReadAll(f)
 	if err != nil {
 		return nil, err

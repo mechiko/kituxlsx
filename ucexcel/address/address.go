@@ -97,5 +97,5 @@ func (a *address) Row() int {
 }
 
 func (a *address) Col() int {
-	return a.row
+	return a.col
 }

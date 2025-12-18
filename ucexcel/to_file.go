@@ -12,18 +12,11 @@ func (ue *ucexcel) ToFile() error {
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}
-	defer func() error {
-		if err := file.Close(); err != nil {
-			return fmt.Errorf("%w", err)
-		}
-		return nil
-	}()
-
 	if _, err := ue.file.WriteTo(file); err != nil {
 		return fmt.Errorf("%w", err)
 	}
 
-	return err
+	return file.Close()
 }
 
 func (ue *ucexcel) ToFileSimple() error {
@@ -32,18 +25,13 @@ func (ue *ucexcel) ToFileSimple() error {
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}
-	defer func() error {
-		if err := file.Close(); err != nil {
-			return fmt.Errorf("%w", err)
-		}
-		return nil
-	}()
 
 	if _, err := ue.file.WriteTo(file); err != nil {
+		file.Close()
 		return fmt.Errorf("%w", err)
 	}
 
-	return err
+	return file.Close()
 }
 
 func (ue *ucexcel) ToFileName(fn string) error {
@@ -54,16 +42,11 @@ func (ue *ucexcel) ToFileName(fn string) error {
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}
-	defer func() error {
-		if err := file.Close(); err != nil {
-			return fmt.Errorf("%w", err)
-		}
-		return nil
-	}()
 
 	if _, err := ue.file.WriteTo(file); err != nil {
+		file.Close()
 		return fmt.Errorf("%w", err)
 	}
 
-	return err
+	return file.Close()
 }
