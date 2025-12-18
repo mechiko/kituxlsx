@@ -3,68 +3,44 @@ package domain
 import (
 	"fmt"
 	"strings"
-	"time"
 
-	"github.com/mechiko/utility"
+	"kituxlsx/utility"
 )
 
 type Record struct {
-	Cis      *utility.CisInfo
-	Korob    string
-	Palet    string
-	Produced time.Time
-	Expired  time.Time
-	Order    int64
-	Serial   string
+	Cis    *utility.CisInfo
+	Gtin   string
+	Name   string
+	Serial string
+	Box    string
 }
 
 // вставляем GS в файлах от криницы, там он опущен...
 // это только для пива!!!
 func NewRecord(row []string) (*Record, error) {
-	if len(row) != 5 {
-		return nil, fmt.Errorf("записей не равно 5")
+	if len(row) < 3 {
+		return nil, fmt.Errorf("записей меньше 3")
 	}
 	s := row[0]
-	// Insert GS only when absent and length is sufficient
-	if !strings.ContainsRune(s, rune(29)) {
-		if len(s) < 26 {
-			return nil, fmt.Errorf("некорректная длина КМ %d (<26)", len(s))
-		}
-		s = s[:25] + "\x1D" + s[25:]
-	}
 	cis, err := utility.ParseCisInfo(s)
 	if err != nil {
 		return nil, fmt.Errorf("получение КМ %w", err)
 	}
-	produced, err := parseDate(row[3])
-	if err != nil {
-		return nil, fmt.Errorf("ошибка даты производства %s%w", row[3], err)
+	gtin := row[1]
+	if gtin != cis.Gtin {
+		return nil, fmt.Errorf("ошибка gtin таблицы %s не равен gtin в марке %s", row[1], cis.Gtin)
 	}
-	expired, err := parseDate(row[4])
-	if err != nil {
-		return nil, fmt.Errorf("ошибка даты срока годности %s%w", row[4], err)
-	}
+	name := row[2]
 
 	r := &Record{
-		Cis:      cis,
-		Korob:    row[1],
-		Palet:    row[2],
-		Produced: produced,
-		Expired:  expired,
+		Cis:  cis,
+		Gtin: gtin,
+		Name: name,
 	}
 	return r, nil
 }
 
 // полная строка 11 ячеек
 func IsRecord(row []string) bool {
-	return len(row) == 5 && strings.HasPrefix(row[0], "01")
-}
-
-func parseDate(s string) (time.Time, error) {
-	layout := "02.01.2006" // Corresponds to DD.MM.YYYY
-	parsedTime, err := time.Parse(layout, s)
-	if err != nil {
-		return time.Time{}, err
-	}
-	return parsedTime, nil
+	return len(row) >= 3 && strings.HasPrefix(row[0], "01")
 }

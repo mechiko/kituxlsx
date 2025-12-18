@@ -4,7 +4,8 @@ import (
 	"encoding/base64"
 	"fmt"
 
-	"github.com/mechiko/utility"
+	"kituxlsx/utility"
+
 	"github.com/mechiko/walk"
 	dcl "github.com/mechiko/walk/declarative"
 	"golang.design/x/clipboard"

@@ -8,18 +8,15 @@ import (
 
 	"kituxlsx/app"
 	"kituxlsx/config"
-	"kituxlsx/guitk9"
+	"kituxlsx/gui"
 	"kituxlsx/licenser"
-	"kituxlsx/process"
 	"kituxlsx/reductor"
 	"kituxlsx/zaplog"
 
-	"github.com/mechiko/dbscan"
-	"github.com/mechiko/utility"
+	"kituxlsx/utility"
+
 	"go.uber.org/zap"
 )
-
-var order = flag.Int64("order", 0, "")
 
 // если local true то папка создается локально
 var local = flag.Bool("local", false, "")
@@ -84,26 +81,9 @@ func main() {
 
 	// создаем приложение с опциями из конфига и логером основным
 	app := app.New(cfg, loger, dir)
-	// бд основные находятся в текущем каталоге если не переопределено в настройках
-	app.SetDefaultDbPath("")
-
-	// инициализируем пути необходимые приложению
-	app.CreatePath()
-
-	// инициализируем REPO
-	// TODO изменить получение путей из конфига
-	listDbs := make(dbscan.ListDbInfoForScan)
-	listDbs[dbscan.Config] = &dbscan.DbInfo{}
-	listDbs[dbscan.TrueZnak] = &dbscan.DbInfo{}
-
-	k, err := process.New(app)
-	if err != nil {
-		errMessageExit(loger, "Ошибки установки в app репозитория", err)
-	}
 
 	model := reductor.Model{}
 	model.Read(app)
-	model.Order = *order
 	if model.StartNumberSSCC <= 0 {
 		model.StartNumberSSCC = 1
 		if err := model.Sync(app); err != nil {
@@ -113,5 +93,6 @@ func main() {
 
 	// создаем редуктор с новой моделью
 	reductor.New(model, app.Logger())
-	guitk9.New(k, app).Run()
+	_, _ = gui.StartDialog(app)
+	// guitk9.New(k, app).Run()
 }

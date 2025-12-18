@@ -15,7 +15,7 @@ type Model struct {
 	LastSSCC        int
 	Date            string
 	ProductionDate  string
-	Order           int64
+	Order           string
 }
 
 type ModelList map[string]Model

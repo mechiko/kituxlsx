@@ -8,7 +8,7 @@ import (
 	"kituxlsx/process"
 	"kituxlsx/reductor"
 
-	"github.com/mechiko/utility"
+	"kituxlsx/utility"
 )
 
 //go:embed tmplKrinicaProtocol.html

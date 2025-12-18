@@ -8,7 +8,6 @@ import (
 
 type Reductor struct {
 	mutex      sync.Mutex
-	in         chan Message
 	logger     *zap.SugaredLogger
 	modelPages ModelList
 }
@@ -21,7 +20,6 @@ var instance *Reductor
 func New(model Model, logger *zap.SugaredLogger) *Reductor {
 	once.Do(func() {
 		instance = &Reductor{
-			in:         make(chan Message, 5),
 			logger:     logger,
 			modelPages: make(ModelList),
 		}
