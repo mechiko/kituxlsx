@@ -7,6 +7,7 @@ import (
 )
 
 type Model struct {
+	File            string
 	StartNumberSSCC int
 	PerPallet       int
 	PrefixSSCC      string
@@ -16,6 +17,7 @@ type Model struct {
 	Date            string
 	ProductionDate  string
 	Order           string
+	IsProcess       bool
 }
 
 type ModelList map[string]Model
@@ -30,6 +32,9 @@ type Message struct {
 func (m *Model) Sync(cfg domain.Apper) error {
 	var agg error
 	// if err := cfg.SaveOptions("inn", m.Inn); err != nil { agg = errors.Join(agg, err) }
+	if err := cfg.SaveOptions("order", m.Order); err != nil {
+		agg = errors.Join(agg, err)
+	}
 	if err := cfg.SaveOptions("ssccprefix", m.PrefixSSCC); err != nil {
 		agg = errors.Join(agg, err)
 	}
@@ -51,6 +56,7 @@ func (m *Model) Read(cfg domain.Apper) (err error) {
 			err = fmt.Errorf("%v", r)
 		}
 	}()
+	m.Order = cfg.Options().Order
 	m.PrefixSSCC = cfg.Options().SsccPrefix
 	m.StartNumberSSCC = cfg.Options().SsccStartNumber
 	m.PerPallet = cfg.Options().PerPallet

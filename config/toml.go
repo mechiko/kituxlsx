@@ -4,8 +4,8 @@ var TomlConfig = []byte(`
 # This is a TOML document.
 hostname = "127.0.0.1"
 hostport = "auto"
-ssccprefix = "1462709"
-ssccstartnumber = 21
+ssccprefix = ""
+ssccstartnumber = 0
 perpallet = 24
 
 [layouts]
@@ -22,6 +22,7 @@ type Configuration struct {
 	SsccPrefix      string              `json:"ssccprefix"`
 	SsccStartNumber int                 `json:"ssccstartnumber"`
 	PerPallet       int                 `json:"perpallet"`
+	Order           string              `json:"order"`
 	Layouts         LayoutConfiguration `json:"layouts"`
 }
 

@@ -84,8 +84,14 @@ func main() {
 
 	model := reductor.Model{}
 	model.Read(app)
-	if model.StartNumberSSCC <= 0 {
-		model.StartNumberSSCC = 1
+	if model.StartNumberSSCC < 0 {
+		model.StartNumberSSCC = 0
+		if err := model.Sync(app); err != nil {
+			errMessageExit(loger, "Ошибки записи файла конфигурации", err)
+		}
+	}
+	if model.PerPallet < 0 {
+		model.PerPallet = 1
 		if err := model.Sync(app); err != nil {
 			errMessageExit(loger, "Ошибки записи файла конфигурации", err)
 		}
@@ -93,6 +99,6 @@ func main() {
 
 	// создаем редуктор с новой моделью
 	reductor.New(model, app.Logger())
-	_, _ = gui.StartDialog(app)
+	_, _ = gui.New(app).StartDialog(app)
 	// guitk9.New(k, app).Run()
 }
