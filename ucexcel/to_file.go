@@ -13,6 +13,7 @@ func (ue *ucexcel) ToFile() error {
 		return fmt.Errorf("%w", err)
 	}
 	if _, err := ue.file.WriteTo(file); err != nil {
+		file.Close()
 		return fmt.Errorf("%w", err)
 	}
 
