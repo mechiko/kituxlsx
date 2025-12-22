@@ -11,12 +11,17 @@ type Record struct {
 	Cis    *utility.CisInfo
 	Gtin   string
 	Name   string
-	Serial string
-	Box    string
+	Serial string // записывается номер марки по шаблону Sprintf("%s-%05d", model.Order, rowNumber+1)
+	Box    string // порядковый номер коробки по этому заказу только по шаблону Sprintf("%s_%03d", boxPrefix, box)
 }
 
-// вставляем GS в файлах от криницы, там он опущен...
-// это только для пива!!!
+type Pallete struct {
+	Code   string
+	Volume string
+	Name   string
+	Box    string // порядковый номер коробки по этому заказу только по шаблону Sprintf("%s_%03d", boxPrefix, box)
+}
+
 func NewRecord(row []string) (*Record, error) {
 	if len(row) < 3 {
 		return nil, fmt.Errorf("записей меньше 3")
@@ -40,7 +45,6 @@ func NewRecord(row []string) (*Record, error) {
 	return r, nil
 }
 
-// полная строка 11 ячеек
 func IsRecord(row []string) bool {
 	return len(row) >= 3 && strings.HasPrefix(row[0], "01")
 }

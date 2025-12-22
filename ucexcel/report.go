@@ -32,9 +32,11 @@ func (ue *ucexcel) templatePalet(pallet string, s []*domain.Record) error {
 
 func (ue *ucexcel) templateLine(palet string, s *domain.Record) error {
 	addr := ue.address.Address()
+
 	if err := ue.file.SetCellStr(ue.sheet, addr, s.Cis.Code); err != nil {
 		return fmt.Errorf("excel error %w", err)
 	}
+
 	if err := ue.file.SetCellStr(ue.sheet, ue.address.NextCol(), s.Serial); err != nil {
 		return fmt.Errorf("excel error %w", err)
 	}
