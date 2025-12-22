@@ -45,6 +45,9 @@ func (p *pdfProc) addJpgColumn(col core.Col, colTempl *domain.RowPrimitive, _ *d
 
 func (p *pdfProc) addStringColumn(col core.Col, colTempl *domain.RowPrimitive, code *domain.Pallete) error {
 	value := strings.ReplaceAll(colTempl.Value, "@code", code.Code)
+	value = strings.ReplaceAll(value, "@box", code.Box)
+	value = strings.ReplaceAll(value, "@name", code.Name)
+	value = strings.ReplaceAll(value, "@vol", code.Volume)
 	col.Add(text.New(value, colTempl.PropsText()))
 	return nil
 }
@@ -55,6 +58,9 @@ func (p *pdfProc) addArrayStringColumn(col core.Col, colTempl *domain.RowPrimiti
 		value := ""
 		if val.Value != "" {
 			value = strings.ReplaceAll(val.Value, "@code", code.Code)
+			value = strings.ReplaceAll(value, "@box", code.Box)
+			value = strings.ReplaceAll(value, "@name", code.Name)
+			value = strings.ReplaceAll(value, "@vol", code.Volume)
 			comps = append(comps, text.New(value, val.PropsText()))
 		}
 		if val.Bar != "" {

@@ -53,7 +53,7 @@ func (a *Assets) loadEmbed() (err error) {
 					return fmt.Errorf("new marktemplate name empty")
 				}
 				if _, ok := a.templateNames[out.Name]; ok {
-					return fmt.Errorf("marktemplate %s alredy present", out.Name)
+					return fmt.Errorf("marktemplate %s already present", out.Name)
 				}
 				a.templateNames[out.Name] = base
 			}

@@ -35,7 +35,7 @@ func New(app domain.Apper) (*pdfProc, error) {
 	tmplDatamatrix := &domain.MarkTemplate{}
 	err = json.Unmarshal(tmplDatamatrixJson, tmplDatamatrix)
 	if err != nil {
-		return nil, fmt.Errorf("Error unmarshal datamatrix file: %v", err)
+		return nil, fmt.Errorf("Error unmarshal datamatrix file: %w", err)
 	}
 	p := &pdfProc{
 		Apper:  app,

@@ -165,11 +165,11 @@ func (a *Assets) Png(name string) (b []byte, err error) {
 		return nil, fmt.Errorf("assets png file name [%s] is empty", name)
 	}
 	name = strings.ToLower(name)
-	byteJpg, ok := a.png[name]
+	bytePng, ok := a.png[name]
 	if !ok {
 		return nil, fmt.Errorf("assets png file name [%s] not found", name)
 	}
-	b = make([]byte, len(byteJpg))
-	copy(b, byteJpg)
+	b = make([]byte, len(bytePng))
+	copy(b, bytePng)
 	return
 }

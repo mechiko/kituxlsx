@@ -39,8 +39,12 @@ func (p *pdfProc) parseColsRow(pg core.Page, colsTempl []*domain.RowPrimitive, c
 			}
 		}
 	}
+	height := 0.0
+	if len(colsTempl) > 0 {
+		height = colsTempl[0].RowHeight
+	}
 	pg.Add(
-		row.New(colsTempl[0].RowHeight).Add(cols...),
+		row.New(height).Add(cols...),
 	)
 	return nil
 }

@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"kituxlsx/domain"
 	"kituxlsx/pdfproc"
-	"log"
 )
 
 func (g *gui) pdf(out string, codes []*domain.Pallete) error {
 	pdf, err := pdfproc.New(g)
 	if err != nil {
-		log.Fatalf("Error pdf new: %v", err)
+		return fmt.Errorf("Error pdf new: %w", err)
 	}
 	err = pdf.BuildMaroto()
 	if err != nil {
